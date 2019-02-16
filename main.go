@@ -1,6 +1,7 @@
 package main
 
 // To do:
+// Check flowdock API to delete thread?
 // Add additional status Fields?
 // use labels/annotations for templating (extra key/value pair(s))
 // reconcile template vs Sprintf
@@ -69,7 +70,7 @@ var (
 	msgThreadExternalURL        string
 	msgThreadStatusColor        string
 	msgThreadStatusValue        string
-	msgExternalThreadIdTemplate = "{{.Entity.System.Hostname}}"
+	msgExternalThreadIdTemplate = "{{.Entity.Name}}-{{.Check.Name}}"
 	msgThreadBodyTemplate       = "{{.Check.Output}}"
 )
 
