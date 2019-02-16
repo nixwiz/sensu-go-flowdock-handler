@@ -1,10 +1,11 @@
 package main
 
 // To do:
-// check return from post to return to calling func
-// Add additional status Fields
+// Add additional status Fields?
 // use labels/annotations for templating (extra key/value pair(s))
-// reconcile usage of log versus other error output and use of panic
+// reconcile template vs Sprintf
+// change use of panic if continuing to use template
+// flag to include namespace with entity name?
 
 import (
 	"bytes"
@@ -12,7 +13,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -54,6 +54,8 @@ type FlowDockMessage struct {
 	Thread             FlowDockMessageThread `json:"thread"`
 }
 
+const flowdockAPIURL string = "https://api.flowdock.com/messages"
+
 var (
 	flowdockToken string
 	authorName    string
@@ -79,10 +81,10 @@ func main() {
 		RunE:  run,
 	}
 
-	cmd.Flags().StringVarP(&flowdockToken, "flowdockToken", "t", "", "The Flowdock Application API key")
-	cmd.Flags().StringVarP(&authorName, "authorName", "n", "Sensu", "The name to list as author of the thread")
-	cmd.Flags().StringVarP(&authorAvatar, "authorAvatar", "a", "https://avatars1.githubusercontent.com/u/1648901?s=200&v=4", "The URL for the avatar to use for the thread")
-	cmd.Flags().StringVarP(&backendURL, "backendURL", "b", "", "The URL for the backend server used to create links to events")
+	cmd.Flags().StringVarP(&flowdockToken, "flowdockToken", "t", "", "The Flowdock application token")
+	cmd.Flags().StringVarP(&authorName, "authorName", "n", "Sensu", "Name for the author of the thread")
+	cmd.Flags().StringVarP(&authorAvatar, "authorAvatar", "a", "https://avatars1.githubusercontent.com/u/1648901?s=200&v=4", "Avatar URL")
+	cmd.Flags().StringVarP(&backendURL, "backendURL", "b", "", "The URL for the backend, used to create links to events")
 	cmd.Execute()
 
 }
@@ -169,7 +171,7 @@ func sendFlowDock(event *types.Event) error {
 
 	msgThreadExternalURL := fmt.Sprintf("%s/%s/events/%s/%s", backendURL, event.Entity.Namespace, event.Entity.Name, event.Check.Name)
 	msgTitle := fmt.Sprintf("%s - %s - %s", msgThreadStatusValue, event.Entity.Name, event.Check.Name)
-	msgThreadTitle := fmt.Sprintf("%s - %s - %s", event.Entity.Name, event.Check.Name, msgThreadStatusValue)
+	msgThreadTitle := fmt.Sprintf("%s - %s", event.Entity.Name, event.Check.Name)
 
 	msgExternalThreadId, err := resolveTemplate(msgExternalThreadIdTemplate, event)
 	if err != nil {
@@ -205,20 +207,17 @@ func sendFlowDock(event *types.Event) error {
 
 	msgBytes, err := json.Marshal(message)
 	if err != nil {
-		log.Fatalln(err)
+		return fmt.Errorf("Failed to marshal Flowdock message: %s", err)
 	}
 
-	resp, err := http.Post("https://api.flowdock.com/messages", "application/json", bytes.NewBuffer(msgBytes))
+	resp, err := http.Post(flowdockAPIURL, "application/json", bytes.NewBuffer(msgBytes))
 	if err != nil {
-		log.Fatalln(err)
+		return fmt.Errorf("Post to %s failed: %s", flowdockAPIURL, err)
 	}
 
-	var result map[string]interface{}
-
-	json.NewDecoder(resp.Body).Decode(&result)
-
-	log.Println(result)
-	log.Println(result["data"])
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		return fmt.Errorf("POST to %s failed with %v", flowdockAPIURL, resp.Status)
+	}
 
 	return nil
 }
