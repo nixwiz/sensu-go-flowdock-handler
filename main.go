@@ -1,8 +1,6 @@
 package main
 
 // To do:
-// reconcile template vs Sprintf
-// change use of panic if continuing to use template
 // flag to include namespace with entity name?
 
 import (
@@ -14,7 +12,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"text/template"
 
 	"github.com/sensu/sensu-go/types"
 	"github.com/spf13/cobra"
@@ -68,8 +65,6 @@ var (
 	msgThreadExternalURL        string
 	msgThreadStatusColor        string
 	msgThreadStatusValue        string
-	msgExternalThreadIdTemplate = "{{.Entity.Name}}-{{.Check.Name}}"
-	msgThreadBodyTemplate       = "{{.Check.Output}}"
 )
 
 func main() {
@@ -172,15 +167,8 @@ func sendFlowDock(event *types.Event) error {
 	msgThreadExternalURL := fmt.Sprintf("%s/%s/events/%s/%s", backendURL, event.Entity.Namespace, event.Entity.Name, event.Check.Name)
 	msgTitle := fmt.Sprintf("%s - %s - %s", msgThreadStatusValue, event.Entity.Name, event.Check.Name)
 	msgThreadTitle := fmt.Sprintf("%s - %s", event.Entity.Name, event.Check.Name)
-
-	msgExternalThreadId, err := resolveTemplate(msgExternalThreadIdTemplate, event)
-	if err != nil {
-		return err
-	}
-	msgThreadBody, err := resolveTemplate(msgThreadBodyTemplate, event)
-	if err != nil {
-		return err
-	}
+        msgExternalThreadId := fmt.Sprintf("%s-%s", event.Entity.Name, event.Check.Name)
+        msgThreadBody := fmt.Sprintf("%s", event.Check.Output)
 
 	message := FlowDockMessage{
 		Flowtoken: flowdockToken,
@@ -228,21 +216,4 @@ func sendFlowDock(event *types.Event) error {
 	}
 
 	return nil
-}
-
-func resolveTemplate(templateValue string, event *types.Event) (string, error) {
-
-	var resolved bytes.Buffer
-	tmpl, err := template.New("test").Parse(templateValue)
-	if err != nil {
-		panic(err)
-	}
-
-	err = tmpl.Execute(&resolved, *event)
-	if err != nil {
-		panic(err)
-	}
-
-	return resolved.String(), nil
-
 }
