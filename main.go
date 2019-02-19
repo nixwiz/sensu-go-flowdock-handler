@@ -1,8 +1,6 @@
 package main
 
 // To do:
-// Add additional status Fields?
-// use labels/annotations for templating (extra key/value pair(s))
 // reconcile template vs Sprintf
 // change use of panic if continuing to use template
 // flag to include namespace with entity name?
@@ -61,6 +59,7 @@ var (
 	authorName    string
 	authorAvatar  string
 	backendURL    string
+	labelPrefix   string
 	stdin         *os.File
 
 	threadBody                  string
@@ -85,6 +84,7 @@ func main() {
 	cmd.Flags().StringVarP(&authorName, "authorName", "n", "Sensu", "Name for the author of the thread")
 	cmd.Flags().StringVarP(&authorAvatar, "authorAvatar", "a", "https://avatars1.githubusercontent.com/u/1648901?s=200&v=4", "Avatar URL")
 	cmd.Flags().StringVarP(&backendURL, "backendURL", "b", "", "The URL for the backend, used to create links to events")
+	cmd.Flags().StringVarP(&labelPrefix, "labelPrefix", "l", "flowdock_", "Label prefix for entity fields to be included in thread")
 	cmd.Execute()
 
 }
@@ -203,6 +203,14 @@ func sendFlowDock(event *types.Event) error {
 				Value: msgThreadStatusValue,
 			},
 		},
+	}
+
+	for k, v := range event.Entity.Labels {
+		prefixstrip := len(labelPrefix)
+		if strings.HasPrefix(k, labelPrefix) {
+			tempfield := FlowDockMessageThreadFields{Label: k[prefixstrip:], Value: v}
+			message.Thread.Fields = append(message.Thread.Fields, tempfield)
+		}
 	}
 
 	msgBytes, err := json.Marshal(message)
