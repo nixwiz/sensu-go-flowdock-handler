@@ -59,12 +59,12 @@ var (
 	labelPrefix   string
 	stdin         *os.File
 
-	threadBody                  string
-	msgTitle                    string
-	msgThreadTitle              string
-	msgThreadExternalURL        string
-	msgThreadStatusColor        string
-	msgThreadStatusValue        string
+	threadBody           string
+	msgTitle             string
+	msgThreadTitle       string
+	msgThreadExternalURL string
+	msgThreadStatusColor string
+	msgThreadStatusValue string
 )
 
 func main() {
@@ -167,8 +167,8 @@ func sendFlowDock(event *types.Event) error {
 	msgThreadExternalURL := fmt.Sprintf("%s/%s/events/%s/%s", backendURL, event.Entity.Namespace, event.Entity.Name, event.Check.Name)
 	msgTitle := fmt.Sprintf("%s - %s - %s", msgThreadStatusValue, event.Entity.Name, event.Check.Name)
 	msgThreadTitle := fmt.Sprintf("%s - %s", event.Entity.Name, event.Check.Name)
-        msgExternalThreadId := fmt.Sprintf("%s-%s", event.Entity.Name, event.Check.Name)
-        msgThreadBody := fmt.Sprintf("%s", event.Check.Output)
+	msgExternalThreadId := fmt.Sprintf("%s-%s", event.Entity.Name, event.Check.Name)
+	msgThreadBody := fmt.Sprintf("%s", event.Check.Output)
 
 	message := FlowDockMessage{
 		Flowtoken: flowdockToken,
