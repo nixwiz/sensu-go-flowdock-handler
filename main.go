@@ -80,10 +80,10 @@ func main() {
 		RunE:  run,
 	}
 
-	cmd.Flags().StringVarP(&flowdockToken, "flowdockToken", "t", "", "The Flowdock application token")
+	cmd.Flags().StringVarP(&flowdockToken, "flowdockToken", "t", os.Getenv("FLOWDOCK_TOKEN"), "The Flowdock application token")
 	cmd.Flags().StringVarP(&authorName, "authorName", "n", "Sensu", "Name for the author of the thread")
 	cmd.Flags().StringVarP(&authorAvatar, "authorAvatar", "a", "https://avatars1.githubusercontent.com/u/1648901?s=200&v=4", "Avatar URL")
-	cmd.Flags().StringVarP(&backendURL, "backendURL", "b", "", "The URL for the backend, used to create links to events")
+	cmd.Flags().StringVarP(&backendURL, "backendURL", "b", os.Getenv("FLOWDOCK_BACKENDURL"), "The URL for the backend, used to create links to events")
 	cmd.Flags().StringVarP(&labelPrefix, "labelPrefix", "l", "flowdock_", "Label prefix for entity fields to be included in thread")
 	cmd.Execute()
 
