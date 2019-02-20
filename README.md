@@ -3,7 +3,7 @@ The Senso Go Flowdock Handler is a [Sensu Event Handler][1] for sending incident
 notifications to CA Flowdock.
 
 ## Installation
-Create an executable script from this source.
+Create an executable script from this source.  I am working on creating release binaries.
 
 From the local path of the sensu-go-flowdock-handler repository:
 
@@ -11,9 +11,7 @@ From the local path of the sensu-go-flowdock-handler repository:
 go build -o /usr/local/bin/sensu-flowdock-handler main.go
 ```
 
-[1]: https://docs.sensu.io/sensu-go/5.2/reference/handlers/#how-do-sensu-handlers-work
-
-## Configuration
+## Sensu Configuration
 
 Example Sensu Go definition:
 
@@ -38,6 +36,13 @@ Example Sensu Go definition:
 
 ```
 
+## Flowdock Configuration
+
+This handler makes use of Flowdock's "new" [Integration API][2] mechanism.  This means creating a [developer application][3]
+and then a [source][4].  This source will have the API Token needed by this handler.
+
+**Note:**  Actions for these messages are not implemented.
+
 ## Usage Examples
 
 #### Help
@@ -61,3 +66,34 @@ Flags:
 |--------------------|-------|
 |FLOWDOCK_TOKEN| same as -t / --flowdockToken|
 |FLOWDOCK_BACKENDURL|same as -b / --backendURL|
+
+**Note:**  The command line arguments take precedence over the environment variables above.
+
+#### Usage of entity labels to add fields to output
+This handler can make use of labels provided by the entity to populate addtional fields in the thread.
+```yaml
+---
+##
+# agent configuration
+##
+#name: ""
+namespace: "default"
+subscriptions:
+  - linux
+backend-url:
+  - "ws://127.0.0.1:8081"
+
+labels:
+  flowdock_Application: "webapp1"
+  flowdock_Environment: "live"
+```
+
+## Sample in Flowdock
+Below is a thread sample that includes surfacing the labels defined above.
+
+![Flowdock Sample](https://toddcampbell.net/images/sensu_flowdock.png)
+
+[1]: https://docs.sensu.io/sensu-go/5.2/reference/handlers/#how-do-sensu-handlers-work
+[2]: https://www.flowdock.com/api/integration-getting-started
+[3]: https://www.flowdock.com/oauth/applications
+[4]: https://www.flowdock.com/api/sources
