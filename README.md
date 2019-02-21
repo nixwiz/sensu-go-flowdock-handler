@@ -3,7 +3,7 @@ The Senso Go Flowdock Handler is a [Sensu Event Handler][1] for sending incident
 notifications to CA Flowdock.
 
 ## Installation
-Create an executable script from this source.  I am working on creating release binaries.
+Create an executable script from this source or download one of the existing releases.
 
 From the local path of the sensu-go-flowdock-handler repository:
 
