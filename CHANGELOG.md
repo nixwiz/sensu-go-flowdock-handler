@@ -9,7 +9,7 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-## [0.1.0] - 2019-02-2
+## [0.1.1] - 2019-02-2
 
 ### Added
 - Initial release
