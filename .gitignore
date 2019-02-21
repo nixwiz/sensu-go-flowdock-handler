@@ -6,3 +6,4 @@
 *.dylib
 sensu-go-flowdock-handler
 main
+dist/
