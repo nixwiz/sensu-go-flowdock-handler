@@ -97,4 +97,4 @@ Below is a thread sample that includes surfacing the labels defined above.
 [2]: https://www.flowdock.com/api/integration-getting-started
 [3]: https://www.flowdock.com/oauth/applications
 [4]: https://www.flowdock.com/api/sources
-[4]: https://github.com/nixwiz/sensu-go-flowdock-handler/releases
+[5]: https://github.com/nixwiz/sensu-go-flowdock-handler/releases
