@@ -1,8 +1,5 @@
 package main
 
-// To do:
-// flag to include namespace with entity name?
-
 import (
 	"bytes"
 	"encoding/json"
@@ -53,12 +50,13 @@ type FlowDockMessage struct {
 const flowdockAPIURL string = "https://api.flowdock.com/messages"
 
 var (
-	flowdockToken string
-	authorName    string
-	authorAvatar  string
-	backendURL    string
-	labelPrefix   string
-	stdin         *os.File
+	flowdockToken    string
+	authorName       string
+	authorAvatar     string
+	backendURL       string
+	labelPrefix      string
+	includeNamespace bool
+	stdin            *os.File
 
 	threadBody           string
 	msgTitle             string
@@ -81,6 +79,7 @@ func main() {
 	cmd.Flags().StringVarP(&authorAvatar, "authorAvatar", "a", "https://avatars1.githubusercontent.com/u/1648901?s=200&v=4", "Avatar URL")
 	cmd.Flags().StringVarP(&backendURL, "backendURL", "b", os.Getenv("FLOWDOCK_BACKENDURL"), "The URL for the backend, used to create links to events")
 	cmd.Flags().StringVarP(&labelPrefix, "labelPrefix", "l", "flowdock_", "Label prefix for entity fields to be included in thread")
+	cmd.Flags().BoolVarP(&includeNamespace, "includeNamespace", "i", false, "Include the namespace with the entity name in title and thread ID")
 	cmd.Execute()
 
 }
@@ -151,6 +150,7 @@ func sendFlowDock(event *types.Event) error {
 	var (
 		msgThreadStatusColor string
 		msgThreadStatusValue string
+		msgNamespace         string
 	)
 
 	switch eventStatus := event.Check.Status; eventStatus {
@@ -168,10 +168,16 @@ func sendFlowDock(event *types.Event) error {
 		msgThreadStatusValue = "UNKNOWN"
 	}
 
+	if includeNamespace {
+		msgNamespace = event.Entity.Namespace + "/"
+	} else {
+		msgNamespace = ""
+	}
+
 	msgThreadExternalURL := fmt.Sprintf("%s/%s/events/%s/%s", backendURL, event.Entity.Namespace, event.Entity.Name, event.Check.Name)
-	msgTitle := fmt.Sprintf("%s - %s - %s", msgThreadStatusValue, event.Entity.Name, event.Check.Name)
-	msgThreadTitle := fmt.Sprintf("%s - %s", event.Entity.Name, event.Check.Name)
-	msgExternalThreadId := fmt.Sprintf("%s-%s", event.Entity.Name, event.Check.Name)
+	msgTitle := fmt.Sprintf("%s - %s%s - %s", msgThreadStatusValue, msgNamespace, event.Entity.Name, event.Check.Name)
+	msgThreadTitle := fmt.Sprintf("%s%s - %s", msgNamespace, event.Entity.Name, event.Check.Name)
+	msgExternalThreadId := fmt.Sprintf("%s%s-%s", msgNamespace, event.Entity.Name, event.Check.Name)
 	msgThreadBody := fmt.Sprintf("%s", event.Check.Output)
 
 	message := FlowDockMessage{
