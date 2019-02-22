@@ -12,8 +12,8 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 ## [0.2.0] - 2019-02-2
 
 ### Added
-added validation of backend URL
-include namespace option
+- added validation of backend URL
+- include namespace option
 
 
 ## [0.1.1] - 2019-02-2
