@@ -13,6 +13,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/sensu/sensu-go/types"
 	"github.com/spf13/cobra"
 )
@@ -136,6 +137,9 @@ func checkArgs() error {
 	}
 	if len(backendURL) == 0 {
 		return errors.New("missing backend URL specification")
+	}
+	if !govalidator.IsURL(backendURL) {
+		return errors.New("invlaid backend URL specification")
 	}
 	backendURL = strings.TrimSuffix(backendURL, "/")
 
