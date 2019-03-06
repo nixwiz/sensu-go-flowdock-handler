@@ -8,6 +8,12 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 ## Unreleased
 
 ### Added
+- Support for annotations
+
+### Changed
+- Changed the environment variable names to be more consistent
+
+### Added
 
 ## [0.2.0] - 2019-02-2
 

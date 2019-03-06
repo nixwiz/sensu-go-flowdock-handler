@@ -57,19 +57,22 @@ Usage:
 Flags:
   -a, --authorAvatar string    Avatar URL (default "https://avatars1.githubusercontent.com/u/1648901?s=200&v=4")
   -n, --authorName string      Name for the author of the thread (default "Sensu")
-  -b, --backendURL string      The URL for the backend, used to create links to events
-  -t, --flowdockToken string   The Flowdock application token
+  -b, --backendURL string      The URL for the backend, used to create links to events, if not in env SENSU_FLOWDOCK_BACKENDURL
+  -t, --flowdockToken string   The Flowdock application token, if not in env SENSU_FLOWDOCK_TOKEN
   -h, --help                   help for sensu-flowdock-handler
   -l, --labelPrefix string     Label prefix for entity fields to be included in thread (default "flowdock_")
 ```
 
-#### Environment Variables
-|Variable|Setting|
-|--------------------|-------|
-|FLOWDOCK_TOKEN| same as -t / --flowdockToken|
-|FLOWDOCK_BACKENDURL|same as -b / --backendURL|
+#### Environment Variables and Annotations
+|Environment Variable|Setting|Annotation|
+|--------------------|-------|----------|
+|SENSU_FLOWDOCK_TOKEN| same as -t / --flowdockToken|sensu.io/plugins/flowdock/token|
+|SENSU_FLOWDOCK_BACKENDURL|same as -b / --backendURL|sensu.io/plugins/flowdock/backend-url|
+|N/A|same as -n / --authorName|sensu.io/plugins/flowdock/author-name|
+|N/A|same as -a / --authorAvatar|sensu.io/plugins/flowdock/author-avatar|
 
-**Note:**  The command line arguments take precedence over the environment variables above.
+#### Precedence
+environment variable < command-line argument < annotation
 
 #### Usage of entity labels to add fields to output
 This handler can make use of labels provided by the entity to populate addtional fields in the thread.
