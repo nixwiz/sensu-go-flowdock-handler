@@ -103,7 +103,7 @@ func main() {
 	cmd.Flags().StringVarP(&config.FlowdockToken.Value, "flowdockToken", "t", os.Getenv(config.FlowdockToken.Env), "The Flowdock application token, if not in env "+config.FlowdockToken.Env)
 	cmd.Flags().StringVarP(&config.AuthorName.Value, "authorName", "n", config.AuthorName.Value, "Name for the author of the thread")
 	cmd.Flags().StringVarP(&config.AuthorAvatar.Value, "authorAvatar", "a", config.AuthorAvatar.Value, "Avatar URL")
-	cmd.Flags().StringVarP(&config.BackendURL.Value, "backendURL", "b", os.Getenv(config.FlowdockToken.Env), "The URL for the backend, used to create links to events, if not in env "+config.BackendURL.Env)
+	cmd.Flags().StringVarP(&config.BackendURL.Value, "backendURL", "b", os.Getenv(config.BackendURL.Env), "The URL for the backend, used to create links to events, if not in env "+config.BackendURL.Env)
 	cmd.Flags().StringVarP(&labelPrefix, "labelPrefix", "l", "flowdock_", "Label prefix for entity fields to be included in thread")
 	cmd.Flags().BoolVarP(&includeNamespace, "includeNamespace", "i", false, "Include the namespace with the entity name in title and thread ID")
 	cmd.Execute()

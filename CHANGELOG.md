@@ -7,6 +7,11 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## [0.3.1] - 2019-03-25
+
+### Changed
+- Fixed issue with backend URL env variable pointing wrong config value
+
 ## [0.3.0] - 2019-03-06
 
 ### Added
