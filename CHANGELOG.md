@@ -7,6 +7,14 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Changed
+- Rewrote to use confighandler
+- Updated to use modules
+- Compiled with go1.12.9
+- Minor documentation changes
+- Remove v from version numbers for goreleaser
+- Fix all references to be Flowdock (not FlowDock)
+
 ## [0.3.1] - 2019-03-25
 
 ### Changed
