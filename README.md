@@ -3,7 +3,7 @@ The Senso Go Flowdock Handler is a [Sensu Event Handler][1] for sending incident
 notifications to CA Flowdock.
 
 ## Installation
-Create an executable binary from this source, create an asset from [bonsai][6], or download one of the existing [releases][5].
+Create an executable binary from this source, create an [asset][7] from [bonsai][6], or download one of the existing [releases][5].
 
 From the local path of the sensu-go-flowdock-handler repository:
 
@@ -103,3 +103,4 @@ Below is a thread sample that includes surfacing the labels defined above.
 [4]: https://www.flowdock.com/api/sources
 [5]: https://github.com/nixwiz/sensu-go-flowdock-handler/releases
 [6]: https://bonsai.sensu.io/assets/nixwiz/sensu-go-flowdock-handler
+[7]: https://docs.sensu.io/sensu-go/latest/reference/assets/
