@@ -5,7 +5,7 @@ notifications to CA Flowdock.
 ## Installation
 Create an executable binary from this source, create an [asset][7] from [bonsai][6], or download one of the existing [releases][5].
 
-From the local path of the sensu-go-flowdock-handler repository:
+To build from source, from the local path of the sensu-go-flowdock-handler repository:
 
 ```
 go build -o /usr/local/bin/sensu-go-flowdock-handler main.go
