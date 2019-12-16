@@ -1,4 +1,6 @@
 # sensu-go-flowdock-handler
+TravisCI: [![TravisCI Build Status](https://travis-ci.org/nixwiz/sensu-go-flowdock-handler.svg?branch=master)](https://travis-ci.org/nixwiz/sensu-go-flowdock-handler)
+
 The Senso Go Flowdock Handler is a [Sensu Event Handler][1] for sending incident
 notifications to CA Flowdock.
 
