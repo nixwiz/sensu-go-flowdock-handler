@@ -7,6 +7,9 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Changed
+- Fixed goreleaser deprecated archive to use archives
+
 ## [0.4.1] - 2019-12-17
 
 ### Changed
