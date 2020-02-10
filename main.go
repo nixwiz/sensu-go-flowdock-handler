@@ -9,8 +9,8 @@ import (
 	"strings"
 
 	"github.com/asaskevich/govalidator"
+	"github.com/sensu-community/sensu-plugin-sdk/sensu"
 	corev2 "github.com/sensu/sensu-go/api/core/v2"
-	"github.com/sensu/sensu-plugins-go-library/sensu"
 )
 
 type FlowdockMessageAuthor struct {
