@@ -24,7 +24,7 @@ func TestExecuteHandler(t *testing.T) {
 		assert.NoError(err)
 		msg := &FlowdockMessage{}
 		err = json.Unmarshal(body, msg)
-		assert.NoError(err)
+		require.NoError(t, err)
 		expectedTitle := "OK - entity1 - check1"
 		assert.Equal(expectedTitle, msg.Title)
 		expectedThreadStatusColor := "green"
