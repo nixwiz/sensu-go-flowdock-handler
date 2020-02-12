@@ -52,8 +52,7 @@ const (
 	backendURL       = "backendURL"
 	includeNamespace = "includeNamespace"
 	labelPrefix      = "labelPrefix"
-
-	flowdockAPIURL string = "https://api.flowdock.com/messages"
+	flowdockAPIURL   = "flowdockAPIURL"
 )
 
 type HandlerConfig struct {
@@ -64,6 +63,7 @@ type HandlerConfig struct {
 	BackendURL       string
 	LabelPrefix      string
 	IncludeNamespace bool
+	FlowdockAPIURL   string
 }
 
 var (
@@ -131,6 +131,14 @@ var (
 			Default:   false,
 			Usage:     "Include the namespace with the entity name in title and thread ID",
 			Value:     &config.IncludeNamespace,
+		},
+		{
+			Path:      flowdockAPIURL,
+			Argument:  flowdockAPIURL,
+			Shorthand: "u",
+			Default:   "https://api.flowdock.com/messages",
+			Usage:     "The Flowdock API URL",
+			Value:     &config.FlowdockAPIURL,
 		},
 	}
 )
@@ -235,13 +243,13 @@ func sendFlowdock(event *corev2.Event) error {
 		return fmt.Errorf("Failed to marshal Flowdock message: %s", err)
 	}
 
-	resp, err := http.Post(flowdockAPIURL, "application/json", bytes.NewBuffer(msgBytes))
+	resp, err := http.Post(config.FlowdockAPIURL, "application/json", bytes.NewBuffer(msgBytes))
 	if err != nil {
-		return fmt.Errorf("Post to %s failed: %s", flowdockAPIURL, err)
+		return fmt.Errorf("Post to %s failed: %s", config.FlowdockAPIURL, err)
 	}
 
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		return fmt.Errorf("POST to %s failed with %v", flowdockAPIURL, resp.Status)
+		return fmt.Errorf("POST to %s failed with %v", config.FlowdockAPIURL, resp.Status)
 	}
 
 	return nil

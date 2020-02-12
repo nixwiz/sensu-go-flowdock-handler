@@ -35,13 +35,14 @@ Usage:
   sensu-go-flowdock-handler [flags]
 
 Flags:
-  -a, --autherAvatar string    Avatar URL (default "https://avatars1.githubusercontent.com/u/1648901?s=200&v=4")
-  -n, --authorName string      Name for the auther of the thread (default "Sensu")
-  -b, --backendURL string      The URL for the backend, used to create links to events
-  -t, --flowdockToken string   The Flowdock application token
-  -h, --help                   help for sensu-go-flowdock-handler
-  -i, --includeNamespace       Include the namespace with the entity name in title and thread ID
-  -l, --labelPrefix string     Label prefix for entity fields to be included in thread
+  -a, --autherAvatar string     Avatar URL (default "https://avatars1.githubusercontent.com/u/1648901?s=200&v=4")
+  -n, --authorName string       Name for the auther of the thread (default "Sensu")
+  -b, --backendURL string       The URL for the backend, used to create links to events
+  -u, --flowdockAPIURL string   The Flowdock API URL (default "https://api.flowdock.com/messages")
+  -t, --flowdockToken string    The Flowdock application token
+  -h, --help                    help for sensu-go-flowdock-handler
+  -i, --includeNamespace        Include the namespace with the entity name in title and thread ID
+  -l, --labelPrefix string      Label prefix for entity fields to be included in thread
 ```
 
 ## Configuration
