@@ -7,6 +7,9 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Changed
+- Cleanups to make golint and goreportcard happy
+
 ## [0.5.1] - 2020-02-12
 
 ### Changed
