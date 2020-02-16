@@ -145,12 +145,12 @@ var (
 
 func main() {
 
-	goHandler := sensu.NewGoHandler(&config.PluginConfig, flowdockConfigOptions, checkArgs, sendFlowdock)
+	goHandler := sensu.NewGoHandler(&config.PluginConfig, flowdockConfigOptions, CheckArgs, SendFlowdock)
 	goHandler.Execute()
 
 }
 
-func checkArgs(_ *corev2.Event) error {
+func CheckArgs(_ *corev2.Event) error {
 
 	if len(config.FlowdockToken) == 0 {
 		return errors.New("missing Flowdock token")
@@ -172,7 +172,7 @@ func checkArgs(_ *corev2.Event) error {
 	return nil
 }
 
-func sendFlowdock(event *corev2.Event) error {
+func SendFlowdock(event *corev2.Event) error {
 
 	var (
 		msgThreadStatusColor string
@@ -231,8 +231,8 @@ func sendFlowdock(event *corev2.Event) error {
 	}
 
 	for k, v := range event.Entity.Labels {
-		prefixstrip := len(labelPrefix)
-		if strings.HasPrefix(k, labelPrefix) {
+		prefixstrip := len(config.LabelPrefix)
+		if strings.HasPrefix(k, config.LabelPrefix) {
 			tempfield := FlowdockMessageThreadFields{Label: k[prefixstrip:], Value: v}
 			message.Thread.Fields = append(message.Thread.Fields, tempfield)
 		}
