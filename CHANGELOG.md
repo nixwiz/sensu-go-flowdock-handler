@@ -7,6 +7,10 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Changed
+- Improved test coverage
+- Fixed bug where labelPrefix wasn't being properly referenced
+
 ## [0.5.1] - 2020-02-12
 
 ### Changed
