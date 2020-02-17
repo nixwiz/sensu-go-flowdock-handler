@@ -13,48 +13,54 @@ import (
 	corev2 "github.com/sensu/sensu-go/api/core/v2"
 )
 
+// FlowdockMessageAuthor is a subtype in FlowdockMessage
 type FlowdockMessageAuthor struct {
 	Name   string `json:"name"`
 	Avatar string `json:"avatar"`
 }
 
+// FlowdockMessageThreadStatus is a subtype in FlowdockMessageThread
 type FlowdockMessageThreadStatus struct {
 	Color string `json:"color"`
 	Value string `json:"value"`
 }
 
+// FlowdockMessageThreadFields is a subtype in FlowdockMessageThread
 type FlowdockMessageThreadFields struct {
 	Label string `json:"label"`
 	Value string `json:"value"`
 }
 
+// FlowdockMessageThread is is a subtype in FlowdockMessage
 type FlowdockMessageThread struct {
-	Title        string                        `json:"title"`
-	Fields       []FlowdockMessageThreadFields `json:"fields"`
-	Body         string                        `json:"body"`
-	External_url string                        `json:"external_url"`
-	Status       FlowdockMessageThreadStatus   `json:"status"`
+	Title       string                        `json:"title"`
+	Fields      []FlowdockMessageThreadFields `json:"fields"`
+	Body        string                        `json:"body"`
+	ExternalURL string                        `json:"external_url"`
+	Status      FlowdockMessageThreadStatus   `json:"status"`
 }
 
+// FlowdockMessage is the JSON type for a Flowdock message
 type FlowdockMessage struct {
-	Flowtoken          string                `json:"flow_token"`
-	Event              string                `json:"event"`
-	Author             FlowdockMessageAuthor `json:"author"`
-	Title              string                `json:"title"`
-	External_thread_id string                `json:"external_thread_id"`
-	Thread             FlowdockMessageThread `json:"thread"`
+	Flowtoken        string                `json:"flow_token"`
+	Event            string                `json:"event"`
+	Author           FlowdockMessageAuthor `json:"author"`
+	Title            string                `json:"title"`
+	ExternalThreadID string                `json:"external_thread_id"`
+	Thread           FlowdockMessageThread `json:"thread"`
 }
 
 const (
 	flowdockToken    = "flowdockToken"
 	authorName       = "authorName"
-	authorAvatar     = "autherAvatar"
+	authorAvatar     = "authorAvatar"
 	backendURL       = "backendURL"
 	includeNamespace = "includeNamespace"
 	labelPrefix      = "labelPrefix"
 	flowdockAPIURL   = "flowdockAPIURL"
 )
 
+// HandlerConfig is needed for Sensu Go Handlers
 type HandlerConfig struct {
 	sensu.PluginConfig
 	FlowdockToken    string
@@ -96,7 +102,7 @@ var (
 			Argument:  authorName,
 			Shorthand: "n",
 			Default:   "Sensu",
-			Usage:     "Name for the auther of the thread",
+			Usage:     "Name for the author of the thread",
 			Value:     &config.AuthorName,
 		},
 		{
@@ -204,7 +210,7 @@ func SendFlowdock(event *corev2.Event) error {
 	msgThreadExternalURL := fmt.Sprintf("%s/%s/events/%s/%s", config.BackendURL, event.Entity.Namespace, event.Entity.Name, event.Check.Name)
 	msgTitle := fmt.Sprintf("%s - %s%s - %s", msgThreadStatusValue, msgNamespace, event.Entity.Name, event.Check.Name)
 	msgThreadTitle := fmt.Sprintf("%s%s - %s", msgNamespace, event.Entity.Name, event.Check.Name)
-	msgExternalThreadId := fmt.Sprintf("%s%s-%s", msgNamespace, event.Entity.Name, event.Check.Name)
+	msgExternalThreadID := fmt.Sprintf("%s%s-%s", msgNamespace, event.Entity.Name, event.Check.Name)
 	msgThreadBody := fmt.Sprintf("%s", event.Check.Output)
 
 	message := FlowdockMessage{
@@ -214,15 +220,15 @@ func SendFlowdock(event *corev2.Event) error {
 			Name:   config.AuthorName,
 			Avatar: config.AuthorAvatar,
 		},
-		Title:              msgTitle,
-		External_thread_id: msgExternalThreadId,
+		Title:            msgTitle,
+		ExternalThreadID: msgExternalThreadID,
 		Thread: FlowdockMessageThread{
 			Title: msgThreadTitle,
 			Fields: []FlowdockMessageThreadFields{
 				{Label: "Status", Value: msgThreadStatusValue},
 			},
-			Body:         msgThreadBody,
-			External_url: msgThreadExternalURL,
+			Body:        msgThreadBody,
+			ExternalURL: msgThreadExternalURL,
 			Status: FlowdockMessageThreadStatus{
 				Color: msgThreadStatusColor,
 				Value: msgThreadStatusValue,
