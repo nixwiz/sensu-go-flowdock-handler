@@ -79,7 +79,7 @@ spec:
   - nixwiz/sensu-go-flowdock-handler
   secrets:
   - name: SENSU_FLOWDOCK_TOKEN
-    secret: flowdock-token
+    secret: flowdock-token#key
   timeout: 10
 ```
 
