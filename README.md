@@ -86,7 +86,7 @@ spec:
 **Security Note**: The Flowdock Token should always be treated as a security
 sensitive configuration option and in this example, it is loaded into the
 handler configuration as an environment variable using a [secret][10]. Command
-arguments are commonly readable from the process table by other unprivaledged
+arguments are commonly readable from the process table by other unpriviledged
 users on a system (ex: ps and top commands), so it's a better practice to read
 in sensitive information via environment variables or configuration files on
 disk. The --flowdockToken flag is provided as an override for testing purposes.
