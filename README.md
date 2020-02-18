@@ -11,7 +11,6 @@
 - [Configuration](#configuration)
   - [Sensu Go](#sensu-go)
     - [Asset registration](#asset-registration)
-    - [Asset definition](#asset-definition)
     - [Handler definition](#handler-definition)
   - [Sensu Core](#sensu-core)
 - [Installation from source](#installation-from-source)
@@ -20,7 +19,7 @@
 
 ### Overview
 
-The Senso Go Flowdock Handler is a [Sensu Event Handler][1] for sending incident notifications to CA Flowdock.
+The Senso Go Flowdock Handler is a [Sensu Event Handler][1] for sending incident notifications to [CA Flowdock][11].
 
 ### Files
 
@@ -55,48 +54,42 @@ Assets are the best way to make use of this plugin. If you're not using an asset
 
 `sensuctl asset add nixwiz/sensu-go-flowdock-handler`
 
-If you're using an earlier version of sensuctl, you can download the asset definition from [this project's Bonsai asset index page][7] or one of the existing [releases][5] or create an executable script from this source.
+If you're using an earlier version of sensuctl, you can download the asset definition from [this project's Bonsai asset index page][6] or one of the existing [releases][5] or create an executable script from this source.
 
-From the local path of the sensu-go-flowdock-handler repository:
+To build from source, from the local path of the sensu-go-flowdock-handler repository:
 ```
 go build -o /usr/local/bin/sensu-go-flowdock-handler main.go
 ```
 
-#### Asset definition
-
-```yaml
----
-type: Asset
-api_version: core/v2
-metadata:
-  name: sensu-go-flowdock-handler
-spec:
-  url: https://assets.bonsai.sensu.io/32c48319cfe4c2620aaf057a62cd5140be57633e/sensu-go-flowdock-handler_0.4.0_linux_amd64.tar.gz
-  sha512: e4419af45c367cddd461b6d324f63043c476ed11a2d2e078d9f43eb7ccd87d988e986307324116379f2b9ee62ddbf0c84487a260d0aefadde78ff5143d4377d3
-```
-
 #### Handler definition
 
-```json
-{
-    "api_version": "core/v2",
-    "type": "Handler",
-    "metadata": {
-        "namespace": "default",
-        "name": "flowdock"
-    },
-    "spec": {
-        "type": "pipe",
-        "command": "sensu-go-flowdock-handler -t 0123456789abcdef0123456789abcdef -b http://sensu-backend.example.com:3000",
-        "timeout": 10,
-        "filters": [
-            "is_incident",
-            "not_silenced"
-        ]
-    }
-}
-
+```yaml
+api_version: core/v2
+type: Handler
+metadata:
+  namespace: default
+  name: flowdock
+spec:
+  type: pipe
+  command: sensu-go-flowdock-handler -b http://sensu-backend.example.com:3000
+  filters:
+  - is_incident
+  - not_silenced
+  runtime_assets:
+  - nixwiz/sensu-go-flowdock-handler
+  secrets:
+  - name: SENSU_FLOWDOCK_TOKEN
+    secret: flowdock-token#key
+  timeout: 10
 ```
+
+**Security Note**: The Flowdock Token should always be treated as a security
+sensitive configuration option and in this example, it is loaded into the
+handler configuration as an environment variable using a [secret][10]. Command
+arguments are commonly readable from the process table by other unpriviledged
+users on a system (ex: ps and top commands), so it's a better practice to read
+in sensitive information via environment variables or configuration files on
+disk. The --flowdockToken flag is provided as an override for testing purposes.
 
 ### Sensu Core
 
@@ -175,3 +168,5 @@ N/A
 [7]: https://docs.sensu.io/sensu-go/latest/reference/assets/
 [8]: https://docs.sensu.io/sensu-core/latest/installation/installing-plugins/
 [9]: #asset-registration
+[10]: https://docs.sensu.io/sensu-go/latest/reference/secrets/
+[11]: https://flowdock.com
