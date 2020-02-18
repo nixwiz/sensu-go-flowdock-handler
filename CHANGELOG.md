@@ -11,6 +11,7 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 - Improved test coverage
 - Fixed bug where labelPrefix wasn't being properly referenced
 - Cleanups to make golint and goreportcard happy
+- README changes for secrets and a few other README fixes
 
 ## [0.5.1] - 2020-02-12
 
