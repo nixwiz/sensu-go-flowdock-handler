@@ -94,6 +94,7 @@ var (
 			Argument:  flowdockToken,
 			Shorthand: "t",
 			Default:   "",
+			Secret:    true,
 			Usage:     "The Flowdock application token",
 			Value:     &config.FlowdockToken,
 		},

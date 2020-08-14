@@ -8,6 +8,10 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 ## Unreleased
 
 ### Changed
+- Updated SDK to 0.8.0
+- Set secret bool to true for token
+
+### Changed
 - Improved test coverage
 - Fixed bug where labelPrefix wasn't being properly referenced
 - Cleanups to make golint and goreportcard happy
