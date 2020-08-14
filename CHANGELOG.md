@@ -7,6 +7,11 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## [0.6.3] - 2020-08-14
+
+### Removed
+- Removed 32 bit macOS (Darwin) from bonsai
+
 ## [0.6.2] - 2020-08-14
 
 ### Changed
