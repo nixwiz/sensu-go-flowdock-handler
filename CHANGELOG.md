@@ -7,6 +7,11 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## [0.6.1] - 2020-08-14
+
+### Changed
+- Remove superfluous builds from goreleaser
+
 ## [0.6.0] - 2020-08-14
 
 ### Changed
