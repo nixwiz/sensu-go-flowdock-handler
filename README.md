@@ -17,6 +17,10 @@
 - [Additional notes](#additional-notes)
 - [Contributing](#contributing)
 
+### RIP
+
+With the [impending EOL][12] of the Flowdock service, this repository is being archived on 29 March, 2022.
+
 ### Overview
 
 The Senso Go Flowdock Handler is a [Sensu Event Handler][1] for sending incident notifications to [CA Flowdock][11].
@@ -170,3 +174,4 @@ N/A
 [9]: #asset-registration
 [10]: https://docs.sensu.io/sensu-go/latest/reference/secrets/
 [11]: https://flowdock.com
+[12]: https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/product-advisories/End-of-Life-Announcement-for-CA-Flowdock/19304
